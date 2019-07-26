@@ -1,11 +1,10 @@
-[
-  {
+[{
     "ParameterKey": "ProjectTag",
-    "ParameterValue": "voicefoundry-custom-ccp"
+    "ParameterValue": "vf-demo-ccp"
   },
   {
     "ParameterKey": "RepositoryName",
-    "ParameterValue": "voicefoundry-custom-ccp"
+    "ParameterValue": "vf-demo-ccp"
   },
   {
     "ParameterKey": "BranchName",
