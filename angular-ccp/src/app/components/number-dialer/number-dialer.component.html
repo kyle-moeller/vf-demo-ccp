@@ -1,0 +1,132 @@
+<div class="dialer">
+  <div class="dialer__header">
+    <div class="dialer__header-text">
+      Dial number
+    </div>
+    <div class="dialer__header-close" (click)="close()">
+      <i class="material-icons">close</i>
+    </div>
+  </div>
+  <div class="dialer__input-bar">
+    <app-country-code-select (selectedCountryEvent)="setSelectedCountry($event)"></app-country-code-select>
+    <div class="dialer__input-wrapper">
+      <input class="dialer__number-input" placeholder="Enter a number" (ngModelChange)="sendDigitOnKeyboardInput($event)"
+        [(ngModel)]="phoneNumber">
+      <button class="dialer__dial-btn" (click)="dialNumber()" [disabled]="phoneNumber.length === 0">Dial</button>
+    </div>
+  </div>
+  <div class="dialer__dial-pad">
+    <div class="dial-pad__row">
+      <div class="dial-pad__btn" (click)="addNumber('1')">
+        <div class="dial-pad__btn-number">
+          1
+        </div>
+        <div class="dial-pad__btn-text">
+
+        </div>
+      </div>
+      <div class="dial-pad__btn" (click)="addNumber('2')">
+        <div class="dial-pad__btn-number">
+          2
+        </div>
+        <div class="dial-pad__btn-text">
+          ABC
+        </div>
+      </div>
+      <div class="dial-pad__btn" (click)="addNumber('3')">
+        <div class="dial-pad__btn-number">
+          3
+        </div>
+        <div class="dial-pad__btn-text">
+          DEF
+        </div>
+      </div>
+    </div>
+    <div class="dial-pad__row">
+      <div class="dial-pad__btn" (click)="addNumber('4')">
+        <div class="dial-pad__btn-number">
+          4
+        </div>
+        <div class="dial-pad__btn-text">
+          GHI
+        </div>
+      </div>
+      <div class="dial-pad__btn" (click)="addNumber('5')">
+        <div class="dial-pad__btn-number">
+          5
+        </div>
+        <div class="dial-pad__btn-text">
+          JKL
+        </div>
+      </div>
+      <div class="dial-pad__btn" (click)="addNumber('6')">
+        <div class="dial-pad__btn-number">
+          6
+        </div>
+        <div class="dial-pad__btn-text">
+          MNO
+        </div>
+      </div>
+
+    </div>
+    <div class="dial-pad__row">
+
+      <div class="dial-pad__btn" (click)="addNumber('7')">
+        <div class="dial-pad__btn-number">
+          7
+        </div>
+        <div class="dial-pad__btn-text">
+          PQRS
+        </div>
+      </div>
+
+      <div class="dial-pad__btn" (click)="addNumber('8')">
+        <div class="dial-pad__btn-number">
+          8
+        </div>
+        <div class="dial-pad__btn-text">
+          TUV
+        </div>
+      </div>
+
+      <div class="dial-pad__btn" (click)="addNumber('9')">
+        <div class="dial-pad__btn-number">
+          9
+        </div>
+        <div class="dial-pad__btn-text">
+          WXYZ
+        </div>
+      </div>
+    </div>
+    <div class="dial-pad__row">
+
+      <div class="dial-pad__btn" (click)="addNumber('*')">
+        <div class="dial-pad__btn-number">
+          *
+        </div>
+        <div class="dial-pad__btn-text">
+
+        </div>
+      </div>
+
+      <div class="dial-pad__btn" (click)="addNumber('0')">
+        <div class="dial-pad__btn-number">
+          0
+        </div>
+        <div class="dial-pad__btn-text">
+          +
+        </div>
+      </div>
+
+      <div class="dial-pad__btn" (click)="addNumber('#')">
+        <div class="dial-pad__btn-number">
+          #
+        </div>
+        <div class="dial-pad__btn-text">
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div id="containerDiv"></div>
+<div class="ccp">
+  <app-alert-dialog *ngIf="isAlertDialogOpen()" [alertText]="alertText"></app-alert-dialog>
+  <app-top-panel [availableAgentStates]="availableAgentStates" [agentStatus]="agentStatus"></app-top-panel>
+  <app-state-panel [agentStatus]="agentStatus" [connectAgent]="connectAgent" *ngIf="displayMainComponents()"></app-state-panel>
+  <app-actions-panel [agentStatus]="agentStatus" *ngIf="displayMainComponents()"></app-actions-panel>
+  <app-bottom-buttons-panel [agentStatus]="agentStatus" *ngIf="displayMainComponents()"></app-bottom-buttons-panel>
+  <app-number-dialer *ngIf="isNumberDialerOpen()"></app-number-dialer>
+  <app-quick-connects *ngIf="isQuickConnectsOpen()" [quickConnects]="quickConnects"></app-quick-connects>
+  <app-settings-menu *ngIf="isSettingsMenuOpen()"></app-settings-menu>
+</div>

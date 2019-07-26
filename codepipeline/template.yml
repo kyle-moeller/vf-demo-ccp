@@ -1,0 +1,319 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: |
+  Creates S3 bucket and CloudFront distribution for static website hosting using the default CloudFront SSL Certificate and domain name. A Codepipeline is created to build an deploy the Angular web app source upon commit. CodeBuild looks for a buildspec.yml in the root of the repository to perform the build.
+Parameters:
+  ProjectTag:
+    Type: String
+    Description: VF_Demo_Custom_CCP
+  RepositoryName:
+    Description: vf-demo-ccp
+    Type: String
+  BranchName:
+    Description: master
+    Type: String
+  CloudFrontPriceClass:
+    Type: String
+    Description: The CloudFront distribution price class see https://aws.amazon.com/cloudfront/pricing/
+    Default: "PriceClass_All"
+    AllowedValues:
+      - "PriceClass_100"
+      - "PriceClass_200"
+      - "PriceClass_All"
+  GitHubOwner:
+    Description: GitHub account
+    Type: String
+    NoEcho: true    
+  GitHubToken:
+    Description: GitHub OAuth Token
+    NoEcho: true
+    Type: String    
+Resources:
+  ArtifactBucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Delete
+    Properties:
+      AccessControl: "Private"
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag
+  SourceBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag
+  SourceBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref SourceBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref SourceBucket
+                - "/*"
+            Principal:
+              CanonicalUser:
+                !GetAtt [CloudFrontOriginAccessIdentity, S3CanonicalUserId]
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "CloudFront OAI for ${SourceBucket}"
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Comment: Config for static SPA relies on CustomErrorResponses 200 for client side routing.
+        DefaultRootObject: index.html
+        CustomErrorResponses:
+          - ErrorCachingMinTTL: 5
+            ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html            
+        Enabled: true
+        HttpVersion: http2
+        DefaultCacheBehavior:
+          Compress: true
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: "none"
+          TargetOriginId: SourceBucketOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          DefaultTTL: 43200
+          MaxTTL: 43200
+          MinTTL: 3600
+          AllowedMethods:
+            - OPTIONS
+            - HEAD
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+          CachedMethods:
+            - OPTIONS
+            - HEAD
+            - GET        
+        Origins:
+          - DomainName: !Join
+            - ""
+            - - !Ref SourceBucket
+              - ".s3.amazonaws.com"
+            Id: SourceBucketOrigin
+            OriginPath: ""
+            S3OriginConfig:
+              OriginAccessIdentity: !Join
+                - ""
+                - - "origin-access-identity/cloudfront/"
+                  - !Ref CloudFrontOriginAccessIdentity                
+        PriceClass: !Ref CloudFrontPriceClass
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectTag    
+  PipelineRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+        Version: "2012-10-17"
+      Path: /
+  PipelineRolePolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: PipelineRolePolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - "iam:PassRole"
+              - "sns:Publish"
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - "s3:GetObject"
+              - "s3:GetObjectVersion"
+              - "s3:GetBucketVersioning"
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - "s3:PutObject"
+            Resource:              
+              - !Sub "arn:aws:s3:::${ArtifactBucket}"
+              - !Sub "arn:aws:s3:::${ArtifactBucket}/*"  
+          - Effect: Allow
+            Action:
+              - "ecs:DescribeServices"
+              - "ecs:DescribeTaskDefinition"
+              - "ecs:DescribeTasks"
+              - "ecs:ListTasks"
+              - "ecs:RegisterTaskDefinition"
+              - "ecs:UpdateService"
+              - "codebuild:StartBuild"
+              - "codebuild:BatchGetBuilds"
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - "codecommit:GetBranch"
+              - "codecommit:GetCommit"
+              - "codecommit:UploadArchive"
+              - "codecommit:GetUploadArchiveStatus"
+              - "codecommit:CancelUploadArchive"
+            Resource: "*"
+      Roles:
+        - !Ref PipelineRole
+  CodeBuildRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: "2012-10-17"
+      Path: /
+  CodeBuildRolePolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: CodeBuildRolePolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+              - "logs:DescribeLogGroups"
+            Resource:
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
+          - Effect: Allow
+            Action:
+              - "s3:*"
+            Resource:
+              - !Sub "arn:aws:s3:::${ArtifactBucket}"
+              - !Sub "arn:aws:s3:::${ArtifactBucket}/*"
+              - !Sub "arn:aws:s3:::${SourceBucket}"
+              - !Sub "arn:aws:s3:::${SourceBucket}/*"
+          - Effect: Allow
+            Action:
+              - "cloudfront:CreateInvalidation"
+            Resource:
+              - "*"
+      Roles:
+        - !Ref CodeBuildRole
+  CodePipelineTriggerRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+      Policies:
+        - PolicyName: CodePipelineTriggerPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Resource:
+                  - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:*"
+                Effect: Allow
+                Action:
+                  - codepipeline:StartPipelineExecution      
+  CodeBuild:
+    Type: "AWS::CodeBuild::Project"
+    Properties:
+      Name: !Join
+        - "-"
+        - - !Ref RepositoryName
+          - !Ref BranchName
+          - codebuild
+      Artifacts:
+        Type: CODEPIPELINE
+      Source:
+        Type: CODEPIPELINE        
+      ServiceRole:
+        !Ref CodeBuildRole
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: "aws/codebuild/nodejs:8.11.0"
+        Type: LINUX_CONTAINER
+        PrivilegedMode: true
+        EnvironmentVariables:
+          - Name: BUCKET_NAME
+            Value: !Ref SourceBucket
+          - Name: CLOUDFRONT_DISTRIBUTION_ID
+            Value: !Ref CloudFrontDistribution
+      TimeoutInMinutes: 10
+  CodePipeline:
+    Type: "AWS::CodePipeline::Pipeline"
+    Properties:
+      ArtifactStore:
+        Location: !Ref ArtifactBucket
+        Type: S3
+      DisableInboundStageTransitions: []
+      Name: !Join
+        - "-"
+        - - !Ref RepositoryName
+          - !Ref BranchName
+      RoleArn:
+        !GetAtt [PipelineRole, Arn]
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: "1"
+              Configuration:
+                Owner: !Ref GitHubOwner
+                OAuthToken: !Ref GitHubToken
+                Repo: !Ref RepositoryName
+                Branch: !Ref BranchName
+              OutputArtifacts:
+                - Name: StaticSiteSource
+              RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: BuildAction
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              InputArtifacts:
+                - Name: StaticSiteSource
+              Configuration:
+                ProjectName: !Ref CodeBuild
+              RunOrder: 1  
+Outputs:
+  CloudFrontDomain:
+    Description: Site Url
+    Value: !Join
+      - ""
+      - - "https://"
+        - !GetAtt [CloudFrontDistribution, DomainName]
+  SourceBucket:
+    Description: Source S3 Bucket
+    Value: !Ref SourceBucket

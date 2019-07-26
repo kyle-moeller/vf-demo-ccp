@@ -1,0 +1,15 @@
+<div class="qc">
+  <div class="qc__header">
+    <div class="qc__header-text">
+      Quick connects
+    </div>
+    <div class="qc__header-close" (click)="close()">
+      <i class="material-icons">close</i>
+    </div>
+  </div>
+  <input class="qc__search" placeholder="Find a contact" [(ngModel)]="searchInput" />
+  <ul class="qc__contact-list">
+    <li class="qc__contact-entry" *ngFor="let qc of quickConnects | quickConnectFilter : searchInput">{{qc.name}}
+      <button class="qc__dial-btn" (click)="dialQuickConnect(qc)">Dial</button></li>
+  </ul>
+</div>

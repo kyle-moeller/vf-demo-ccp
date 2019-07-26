@@ -1,0 +1,15 @@
+<div class="bottom-buttons-panel">
+  <div class="bottom-buttons-panel__avail-btn" (click)="setStatusAvailable()" *ngIf="displayAvailableBtn()">
+    Set To Available
+  </div>
+  <div class="bottom-buttons-panel__inbound" *ngIf="displayInboundCallBtns()">
+    <div class="bottom-buttons-panel__inbound-accept" (click)="acceptCall()"><i class="material-icons md-14">call</i>&nbsp;
+      Accept call</div>
+    <div class="bottom-buttons-panel__inbound-reject" (click)="rejectCall()"><i class="material-icons md-14">ring_volume</i>&nbsp;
+      Reject call</div>
+  </div>
+  <div class="bottom-buttons-panel__end-btn" (click)="endCall()" *ngIf="displayEndBtn()">
+    <span *ngIf="!isMultiPartyCall()"><i class="material-icons md-14">ring_volume</i>&nbsp; End Call</span>
+    <span *ngIf="isMultiPartyCall()"><i class="material-icons md-14">phone_forwarded</i>&nbsp; Leave Call</span>
+  </div>
+</div>

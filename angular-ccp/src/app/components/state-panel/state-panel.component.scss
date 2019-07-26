@@ -1,0 +1,101 @@
+.color-available {
+  background-color: #4393ca;
+}
+
+.color-unavailable {
+  background-color: #666666;
+}
+
+.color-connected {
+  background-color: #109b2b;
+}
+
+.color-missed-call {
+  background-color: #f5a623;
+}
+
+.color-hold {
+  background-color: #e07725;
+}
+
+.color-error {
+  background-color: #BD312D;
+}
+
+.state-panel {
+  height: 170px;
+}
+
+.state-panel__status {
+  color: white;
+  font-size: 28px;
+  padding-top: 15px;
+  padding-left: 15px;
+}
+
+.state-panel__contact-info-wrapper {
+  display: flex;
+  padding-top: 60px;
+}
+
+.state-panel__contact-info {
+  color: white;
+  margin-left: 15px;
+}
+
+.state-panel__timer {
+  color: white;
+  margin-left: auto;
+  margin-right: 15px;
+}
+
+.state-panel__muted {
+  color: white;
+  padding-top: 5px;
+  padding-left: 15px;
+  position: absolute;
+}
+
+.state-panel__multi-connection {
+  display: flex;
+  flex-direction: column;
+}
+
+.state-panel__conn-row {
+  height: 85px;
+  width: 100%;
+  color: white;
+
+  div {
+    height: 50%;
+    display: flex;
+    font-weight: normal;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.conn-row__btn {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.conn-row__btn--resume {
+  margin-left: 135px;
+}
+
+.conn-row__btn--hold {
+  margin-left: 150px;
+}
+
+.conn-row__timer {
+  margin-left: auto;
+}

@@ -1,0 +1,46 @@
+.country__code-dropdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // text-align: right;
+  width: 75px;
+  height: 33px;
+  margin-left: 10px;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
+.country__code-list {
+  width: 200px;
+  height: 150px;
+  position: absolute;
+  z-index: 10;
+  background-color: white;
+  left: 21px;
+  overflow-y: scroll;
+  color: black;
+  box-shadow: 2px 2px 3px 3px rgba(0, 0, 0, 0.1);
+
+  ul {
+    padding-left: 10px;
+  }
+
+  .country__code-flag {
+    margin: 8px 8px;
+    border: 1px solid lightgrey;
+  }
+}
+
+.country__code-li {
+  color: #a9a9a9;
+}
+
+.country__selector:hover {
+  background-color: #398ada;
+  cursor: pointer;
+}
+
+.country__selector {
+  list-style-type: none;
+  font-size: 14px;
+}

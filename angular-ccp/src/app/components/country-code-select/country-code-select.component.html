@@ -1,0 +1,15 @@
+<div class="country__code-dropdown" (click)="toggleDropdown()">
+  <span class="country__code-flag flag-icon flag-icon-{{selectedCountry.isoCode}}"></span>
+  <span class="country__code">{{selectedCountry.code}}</span>
+  <i class="fa material-icons" *ngIf="dropDownToggled">arrow_drop_up</i>
+  <i class="fa material-icons" *ngIf="!dropDownToggled">arrow_drop_down</i>
+</div>
+<div class="country__code-list" *ngIf="dropDownToggled">
+  <ul>
+    <li *ngFor="let country of countriesList" class="country__selector" (click)="setSelectedCountry(country)">
+      <span class="country__code-flag flag-icon flag-icon-{{country.isoCode}}"></span>
+      {{country.name}}
+      <span class="country__code-li">{{country.code}}</span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,54 @@
+.bottom-buttons-panel {
+    height: 60px;
+    background-color: #f2f2f2;
+    padding-left: 19px;
+    padding-right: 19px;
+}
+
+.bottom-buttons-panel__avail-btn {
+    background-color: #3383E1;
+    box-shadow: 1px 2px 3px 0px rgba(255, 174, 174, 0.1);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    cursor: pointer;
+}
+
+.bottom-buttons-panel__inbound {
+    display: flex;
+    justify-content: space-evenly;
+    color: white;
+}
+
+.bottom-buttons-panel__inbound-accept {
+    background-color: #538000;
+    height: 40px;
+    width: 127px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.bottom-buttons-panel__inbound-reject {
+    background-color: #D0021B;
+    height: 40px;
+    width: 127px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.bottom-buttons-panel__end-btn {
+    background-color: #D0021B;
+    box-shadow: 1px 2px 3px 0px rgba(255, 174, 174, 0.1);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    cursor: pointer;
+}

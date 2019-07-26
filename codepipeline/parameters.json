@@ -1,0 +1,22 @@
+[
+  {
+    "ParameterKey": "ProjectTag",
+    "ParameterValue": "voicefoundry-custom-ccp"
+  },
+  {
+    "ParameterKey": "RepositoryName",
+    "ParameterValue": "voicefoundry-custom-ccp"
+  },
+  {
+    "ParameterKey": "BranchName",
+    "ParameterValue": "dev"
+  },
+  {
+    "ParameterKey": "GitHubOwner",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "GitHubToken",
+    "ParameterValue": ""
+  }
+]

@@ -1,0 +1,22 @@
+<div class="top-panel" [ngClass]="getBackgroundColorClass()">
+  <i class="top-panel__cloud material-icons md-light md-24" [ngClass]="{'color-text-blue': dropdownToggled}">cloud</i>
+  <div class="top-panel__dropdown-btn" [ngClass]="{'color-text-blue': dropdownToggled, 'disabled': isAgentBusy()}"
+    (click)="toggleDropdown()">
+    Change status
+    <i class="material-icons" *ngIf="dropdownToggled">expand_less</i>
+    <i class="material-icons" *ngIf="!dropdownToggled">expand_more</i>
+  </div>
+  <div class="top-panel__settings-btn" [ngClass]="{'no-border': dropdownToggled}" (click)="toggleSettingsMenu()">
+    <i class="material-icons">settings</i>
+  </div>
+</div>
+<div *ngIf="dropdownToggled" class="top-panel-dropdown">
+  <div class="top-panel__dropdown-opts">
+    <div *ngFor="let state of availableAgentStates" class="top-panel-dropdown__option" [ngClass]="{'top-panel-dropdown__option-selected': agentStatus.name === state.name}"
+      (click)="changeAgentState(state)">
+      <i class="material-icons">check</i>{{state.name}}
+    </div>
+  </div>
+  <div class="top-panel__dropdown-divider"></div>
+  <div class="top-panel__logout" (click)="logout()">Log out, <strong>{{agentUserName}}</strong></div>
+</div>

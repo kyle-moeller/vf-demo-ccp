@@ -1,0 +1,27 @@
+<div class="settings">
+  <div class="settings__phone-settings">
+    <div class="settings__header">
+      <div class="settings__header-text">
+        Settings
+      </div>
+      <div class="settings__header-close" (click)="close()">
+        <i class="material-icons">close</i>
+      </div>
+    </div>
+    <div class="settings_phone-type">
+      <div>Phone type</div>
+      <input type="radio" name="softphone" [checked]="softphone" (click)="setSoftphone(true)"> Softphone <br>
+      <input type="radio" name="softphone" [checked]="!softphone" (click)="setSoftphone(false)"> Desk Phone
+    </div>
+    <div class="settings__input-bar" *ngIf="!softphone">
+      <app-country-code-select (selectedCountryEvent)="setSelectedCountry($event)" [defaultCountry]="phoneNumber?.country"></app-country-code-select>
+      <div class="settings__input-wrapper">
+        <input class="settings__number-input" placeholder="Enter a number" (ngModelChange)="validatePhone($event)"
+          [(ngModel)]="phoneNumber.phoneNumber">
+        <button class="settings__dial-btn" (click)="updateAgentExtension()" [disabled]="phoneNumber.length === 0"
+          [disabled]="!isPhoneNumberValid">Save</button>
+      </div>
+    </div>
+  </div>
+  <div class="settings__download-link" (click)="downloadAgentLogs()">Download Logs</div>
+</div>

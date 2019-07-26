@@ -1,0 +1,36 @@
+<div class="state-panel" [ngClass]="getBackgroundColorClass()">
+    <div class="state-panel__single-connection" *ngIf="!isMultiPartyCall()">
+        <div class="state-panel__status">{{agentStatus | agentStatusPipe}}</div>
+        <div class="state-panel__muted" *ngIf="amazonConnectService.isAgentMuted()">MUTED <i class="material-icons md-14">mic_off</i></div>
+        <div class="state-panel__contact-info-wrapper">
+            <div class="state-panel__contact-info" *ngIf="displayPhoneNumber()">
+                <div>{{getCallStatusText()}}</div>
+                <div>{{getSingleConnectionNumber()}}</div>
+            </div>
+            <div class="state-panel__timer" *ngIf="displayTimer()">
+                <div>Time Elapsed</div>
+                <div>{{stateTimer | millisToTime}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="state-panel__multi-connection" *ngIf="isMultiPartyCall()">
+        <div class="state-panel__conn-row state-panel__conn-row-top" [ngClass]="getConnectionStyle('initial')">
+            <div>
+                <h2>{{getInitialConnectionState()}} </h2>
+                <span class="conn-row__btn conn-row__btn--resume" (click)="resumeInitialConnection()" *ngIf="isTransferHold()"><i class="material-icons">play_arrow</i></span>
+                <span class="conn-row__btn conn-row__btn--hold" (click)="holdInitialConnection()" *ngIf="isTransferJoined()"><i class="material-icons">pause</i></span>
+                <span class="conn-row__btn" (click)="hangUpInitialConnection()"><i class="material-icons">close</i></span>
+            </div>
+            <div>{{getInitialConnectionNumber()}} <span class="conn-row__timer">{{initialConnectionTimer | millisToTime}}</span></div>
+        </div>
+        <div class="state-panel__conn-row" [ngClass]="getConnectionStyle('thirdParty')">
+            <div>
+                <h2>{{getThirdPartyConnectionState()}} </h2>
+                <span class="conn-row__btn conn-row__btn--resume" (click)="resumeThirdPartyConnection()" *ngIf="isTransferHold()"><i class="material-icons">play_arrow</i></span>
+                <span class="conn-row__btn conn-row__btn--hold" (click)="holdThirdPartyConnection()" *ngIf="isTransferJoined()"><i class="material-icons">pause</i></span>
+                <span class="conn-row__btn" (click)="hangUpThirdPartyConnection()"><i class="material-icons">close</i></span>
+            </div>
+            <div>{{getThirdPartyConnectionNumber()}} <span class="conn-row__timer">{{thirdPartyConnectionTimer | millisToTime}}</span></div>
+        </div>
+    </div>
+</div>

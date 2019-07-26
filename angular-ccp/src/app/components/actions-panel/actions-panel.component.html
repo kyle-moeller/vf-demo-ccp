@@ -1,0 +1,86 @@
+<div class="actions-panel">
+  <div class="actions-panel__dial-btns" *ngIf="displayDialBtns()">
+    <div class="actions-panel__btn" (click)="openNumberDialer()"><i class='fa material-icons md-14'>dialpad</i>Dial
+      number</div>
+    <div class="actions-panel__btn" (click)="openQuickConnects()"><i class='fa material-icons md-14'>contacts</i>Quick
+      connects</div>
+  </div>
+  <div class="actions-panel__call-actions" *ngIf="displayConnectedActions()">
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="holdConnection()" *ngIf="!onHold()"><i class="fa material-icons md-16">pause</i>Hold</div>
+      <div class="actions-panel__btn" (click)="holdConnection()" *ngIf="onHold()"><i class="fa material-icons md-18">play_arrow</i>Resume</div>
+      <div *ngIf="isSoftphone()">
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="!amazonconnectService.isAgentMuted()"><i
+            class="fa material-icons md-16">mic_off</i>Mute</div>
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="amazonconnectService.isAgentMuted()"><i class="fa material-icons md-16">mic</i>Unmute</div>
+      </div>
+    </div>
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="openNumberDialer()"><i class='fa material-icons md-14'>dialpad</i>Dial
+        number</div>
+      <div class="actions-panel__btn" (click)="openQuickConnects()"><i class="fa material-icons md-14">phone_forwarded</i>Transfer</div>
+    </div>
+  </div>
+  <div class="actions-panel__call-actions" *ngIf="displayConnectedThirdPartyActions()">
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="holdThirdPartyConnection()" *ngIf="!onHold()"><i class="fa material-icons md-16">pause</i>Hold</div>
+      <div class="actions-panel__btn" (click)="resumeThirdPartyConnection()" *ngIf="onHold()"><i class="fa material-icons md-18">play_arrow</i>Resume</div>
+      <div *ngIf="isSoftphone()">
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="!amazonconnectService.isAgentMuted()"><i
+            class="fa material-icons md-16">mic_off</i>Mute</div>
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="amazonconnectService.isAgentMuted()"><i class="fa material-icons md-16">mic</i>Unmute</div>
+      </div>
+    </div>
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="openNumberDialer()"><i class='fa material-icons md-14'>dialpad</i>Dial
+        number</div>
+    </div>
+  </div>
+  <div class="actions-panel__transfer-actions" *ngIf="displayTransferActions()">
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="joinConnections()"><i class="fa material-icons md-18">call_merge</i>Join</div>
+      <div class="actions-panel__btn" (click)="toggleActionConnections()"><i class="fa material-icons md-18">swap_calls</i>Swap</div>
+    </div>
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="openNumberDialer()"><i class='fa material-icons md-14'>dialpad</i>Dial
+        number</div>
+      <div class="actions-panel__btn" (click)="holdAllConnections()"><i class="fa material-icons md-16">pause</i>Hold
+        all</div>
+    </div>
+    <div class="actions-panel__btn-row">
+      <div *ngIf="isSoftphone()">
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="!amazonconnectService.isAgentMuted()"><i
+            class="fa material-icons md-16">mic_off</i>Mute</div>
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="amazonconnectService.isAgentMuted()"><i class="fa material-icons md-16">mic</i>Unmute</div>
+      </div>
+    </div>
+  </div>
+  <div class="actions-panel__transfer-actions" *ngIf="displayTransferHoldActions()">
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="resumeAllConnections()"><i class="fa material-icons md-18">play_arrow</i>Resume
+        All</div>
+    </div>
+    <div class="actions-panel__btn-row">
+      <div *ngIf="isSoftphone()">
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="!amazonconnectService.isAgentMuted()"><i
+            class="fa material-icons md-16">mic_off</i>Mute</div>
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="amazonconnectService.isAgentMuted()"><i class="fa material-icons md-16">mic</i>Unmute</div>
+      </div>
+    </div>
+  </div>
+  <div class="actions-panel__transfer-actions" *ngIf="displayTransferJoinedActions()">
+    <div class="actions-panel__btn-row">
+      <div class="actions-panel__btn" (click)="openNumberDialer()"><i class='fa material-icons md-14'>dialpad</i>Dial
+        number</div>
+      <div class="actions-panel__btn" (click)="holdAllConnections()"><i class="fa material-icons md-14">pause</i>Hold
+        all</div>
+    </div>
+    <div class="actions-panel__btn-row">
+      <div *ngIf="isSoftphone()">
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="!amazonconnectService.isAgentMuted()"><i
+            class="fa material-icons md-16">mic_off</i>Mute</div>
+        <div class="actions-panel__btn" (click)="muteConnection()" *ngIf="amazonconnectService.isAgentMuted()"><i class="fa material-icons md-16">mic</i>Unmute</div>
+      </div>
+    </div>
+  </div>
+</div>

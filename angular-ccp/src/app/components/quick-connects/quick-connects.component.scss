@@ -1,0 +1,81 @@
+.qc {
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 20px;
+}
+
+.qc__header {
+  // padding-top: 10px;
+}
+
+.qc__header-text {
+  display: inline;
+  // padding-left: 15px;
+  font-size: 18px;
+}
+
+.qc__header-close {
+  display: inline;
+  float: right;
+  // padding-right: 15px;
+  cursor: pointer;
+}
+
+.qc__search {
+  border: none;
+  border-bottom: 1px solid black;
+  width: 280px;
+  height: 40px;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+.qc__search:focus {
+  outline: none;
+}
+
+.qc__contact-list {
+  height: 250px;
+  margin-top: 15px;
+  margin-bottom: 0px;
+  padding: 0;
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 2px;
+  overflow-y: auto;
+  box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.29);
+}
+
+.qc__contact-entry {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  padding-left: 10px;
+  font-size: 14px;
+
+  .qc__dial-btn {
+    visibility: hidden;
+  }
+}
+
+.qc__contact-entry:hover {
+  background: #3388DD;
+  color: #FFFFFF;
+
+  .qc__dial-btn {
+    visibility: visible;
+    cursor: pointer;
+  }
+}
+
+.qc__dial-btn {
+  margin-left: auto;
+  margin-right: 10px;
+  border: none;
+  border-radius: 2px;
+  height: 30px;
+  width: 50px;
+  background-color: #46596E;
+  color: white;
+  font-size: 11px;
+}
